@@ -1,10 +1,21 @@
-import { rules, createComparison } from "../lib/compare.js";
+import { createComparison, rules } from "../lib/compare.js";
 
-export function initSearching(searchField) {
-    // @todo: #5.1 — настроить компаратор
-
+export function initSearching(elements, config) {
     return (data, state, action) => {
-        // @todo: #5.2 — применить компаратор
-        return data;
-    }
+        const searchValue = state[config.searchField]?.trim().toLowerCase();
+        
+        if (!searchValue) {
+            return data; // Если поиск пустой, возвращаем все данные
+        }
+
+        // Прямая фильтрация с частичным поиском по всем указанным полям
+        const searchFields = config.rules.find(r => r.rule === 'searchMultipleFields').searchField;
+        
+        return data.filter(row => {
+            return searchFields.some(field => {
+                const fieldValue = String(row[field] || '').toLowerCase();
+                return fieldValue.includes(searchValue);
+            });
+        });
+    };
 }
