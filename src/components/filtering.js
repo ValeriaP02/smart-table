@@ -41,7 +41,6 @@ export function initFiltering(elements, indexes) {
         return data.filter(row => {
             if (!compare(row, state)) return false;
 
-            // Проверка диапазона суммы
             if (state.totalFrom !== null && row.total < state.totalFrom) {
                 return false;
             }

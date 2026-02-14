@@ -14,7 +14,6 @@ import { initFiltering } from './components/filtering.js';
 import { initSearching } from './components/searching.js';
 // @todo: подключение
 
-
 // Исходные данные используемые в render()
 const { data, ...indexes } = initData(sourceData);
 
