@@ -43,12 +43,20 @@ function render(action) {
     let result = [...data]; // копируем для последующего изменения
 
     // @todo: использование
-    result = applyPagination(result, state, action);
-    result = applySorting(result, state, action);
-    result = applyFiltering(result, state, action);
+    // 1. поиск
     result = applySearching(result, state, action);
 
-    sampleTable.render(result)
+    // 2. фильтрация
+    result = applyFiltering(result, state, action);
+
+    // 3. сортировка
+    result = applySorting(result, state, action);
+
+    // 4. пагинация
+    result = applyPagination(result, state, action);
+
+    // 5. вывод в таблицу
+    sampleTable.render(result);
 }
 
 const sampleTable = initTable({
