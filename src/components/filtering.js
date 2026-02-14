@@ -26,7 +26,6 @@ export function initFiltering(elements, indexes) {
         });;
 
     return (data, state, action) => {
-        // Обработка очистки поля
         if (action && action.type === 'clear') {
             const button = document.querySelector(`button[data-field="${action.payload.field}"]`);
             if (button) {
@@ -38,6 +37,20 @@ export function initFiltering(elements, indexes) {
                 state[action.payload.field] = '';
             }
         }
+
+        return data.filter(row => {
+            if (!compare(row, state)) return false;
+
+            // Проверка диапазона суммы
+            if (state.totalFrom !== null && row.total < state.totalFrom) {
+                return false;
+            }
+            if (state.totalTo !== null && row.total > state.totalTo) {
+                return false;
+            }
+
+            return true;
+        });
 
         // @todo: #4.5 — отфильтровать данные используя компаратор
         return data.filter(row => compare(row, state));

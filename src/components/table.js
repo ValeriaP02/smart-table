@@ -16,7 +16,7 @@ export function initTable(settings, onAction) {
     if (Array.isArray(before)) {
         before.slice().reverse().forEach(subName => {
             const clonedItem = cloneTemplate(subName);
-            root[subName] = clonedItem; // 
+            root[subName] = clonedItem;
             root.container.prepend(clonedItem.container);
         });
     }
@@ -25,7 +25,7 @@ export function initTable(settings, onAction) {
     if (Array.isArray(after)) {
         after.forEach(subName => {
             const clonedItem = cloneTemplate(subName);
-            root[subName] = clonedItem; // 
+            root[subName] = clonedItem;
             root.container.append(clonedItem.container);
         });
     }
