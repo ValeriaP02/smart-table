@@ -26,7 +26,7 @@ export function initFiltering(elements, indexes) {
         });;
 
     return (data, state, action) => {
-        // @todo: #4.2 — обработать очистку поля
+        // Обработка очистки поля
         if (action && action.type === 'clear') {
             const button = document.querySelector(`button[data-field="${action.payload.field}"]`);
             if (button) {
@@ -35,7 +35,6 @@ export function initFiltering(elements, indexes) {
                 if (input) {
                     input.value = '';
                 }
-
                 state[action.payload.field] = '';
             }
         }
