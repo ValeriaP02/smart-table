@@ -90,13 +90,9 @@ const applySorting = initSorting([
     sampleTable.header.elements.sortByTotal
 ]);
 
-const applyFiltering = initFiltering(
-    sampleTable.filter.elements,
-    { searchBySeller: indexes.sellers },
-    collectState(),    // state с полями формы
-    data,              // полный набор данных
-    null               // действие пока может быть null
-);
+const applyFiltering = initFiltering(sampleTable.filter.elements, {
+    searchBySeller: indexes.sellers
+});
 
 const applySearching = initSearching(sampleTable.search.elements, {
     searchField: sampleTable.search.elements.searchValue,

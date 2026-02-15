@@ -18,20 +18,20 @@ export function initFiltering(elements, indexes) {
         }
     });
 
-    // Возвращаем функцию фильтрации
     return function filtering(data, state, action) {
-        const compare = createComparison(defaultRules);
-
         // @todo: #4.2 — очистка полей фильтров
         if (action && action.dataset && action.dataset.name === 'clear') {
-            const input = action.target.closest('.input-group')?.querySelector(`[data-field="${action.dataset.field}"]`);
-            if (input) {
-                input.value = '';
-                if (state) state[action.dataset.field] = '';
+            const parent = action.target.closest('.input-group');
+            if (parent) {
+                const input = parent.querySelector(`[data-field="${action.dataset.field}"]`);
+                if (input) {
+                    input.value = '';
+                    if (state) state[action.dataset.field] = '';
+                }
             }
         }
 
         // @todo: #4.5 — отфильтровать данные используя компаратор
         return data.filter(row => compare(row, state));
-    }
+    };
 }
