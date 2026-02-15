@@ -88,10 +88,8 @@ const applyFiltering = initFiltering(sampleTable.filter.elements, {
 
 const applySearching = initSearching(sampleTable.search.elements, {
     searchField: 'searchValue',
-    rules: [
-        { rule: 'skipEmptyTargetValues' },
-        { rule: 'searchMultipleFields', searchField: 'searchValue', searchFields: ['date', 'customer', 'seller'], caseSensitive: false }
-    ]
+    searchFields: ['date', 'customer', 'seller'],
+    caseSensitive: false
 });
 
 const appRoot = document.querySelector('#app');
