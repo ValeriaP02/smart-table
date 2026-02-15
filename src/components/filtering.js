@@ -32,6 +32,25 @@ export function initFiltering(elements, indexes) {
         }
 
         // @todo: #4.5 — отфильтровать данные используя компаратор
-        return data.filter(row => compare(row, state));
+        return data.filter(row => {
+            if (state.totalFrom) {
+                const total = parseFloat(row.total);
+                if (isNaN(total) || total < parseFloat(state.totalFrom)) {
+                    return false;
+                }
+            }
+            if (state.totalTo) {
+                const total = parseFloat(row.total);
+                if (isNaN(total) || total > parseFloat(state.totalTo)) {
+                    return false;
+                }
+            }
+
+            if (state.searchBySeller && state.searchBySeller !== '' && row.seller !== state.searchBySeller) {
+                return false;
+            }
+
+            return true;
+        });
     };
 }

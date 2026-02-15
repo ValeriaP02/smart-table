@@ -45,23 +45,15 @@ function collectState() {
  */
 
 function render(action) {
-    let state = collectState();
+    const state = collectState();
     let result = [...data];
 
     // @todo: использование
-    // поиск
     result = applySearching(result, state, action);
-
-    // фильтрация
     result = applyFiltering(result, state, action);
-
-    // сортировка
     result = applySorting(result, state, action);
-
-    // пагинация
     result = applyPagination(result, state, action);
 
-    // вывод в таблицу
     sampleTable.render(result);
 }
 

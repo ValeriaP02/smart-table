@@ -46,7 +46,6 @@ export function initTable(settings, onAction) {
             Object.keys(item).forEach(key => {
                 if (row.elements && key in row.elements) {
                     const el = row.elements[key];
-                    // Можно проверить тип тега, но для задания достаточно textContent
                     if (el.tagName === 'INPUT' || el.tagName === 'SELECT') {
                         el.value = item[key];
                     } else {
@@ -54,15 +53,12 @@ export function initTable(settings, onAction) {
                     }
                 }
             });
-            return row.container; // Возвращаем DOM-узел строки
+            return row.container;
         });
 
-        // Очистим текущие строки в таблице и добавим новые
-        // Предположим, что у root.elements есть container для строк, иначе используем root.container
         if (root.elements && root.elements.rows) {
             root.elements.rows.replaceChildren(...nextRows);
         } else {
-            // Просто вставим строки внутрь корневого контейнера (в зависимости от структуры шаблона может потребоваться адаптация)
             root.container.replaceChildren(...nextRows);
         }
     }
