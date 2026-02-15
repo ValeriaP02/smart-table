@@ -7,58 +7,64 @@ import { cloneTemplate } from "../lib/utils.js";
  * @param {(action: HTMLButtonElement | undefined) => void} onAction
  * @returns {{container: Node, elements: *, render: render}}
  */
+
 export function initTable(settings, onAction) {
     const { tableTemplate, rowTemplate, before, after } = settings;
     const root = cloneTemplate(tableTemplate);
 
     // @todo: #1.2 —  вывести дополнительные шаблоны до и после таблицы
-    // добавляем шаблоны перед основной таблицей
-    if (Array.isArray(before)) {
-        before.slice().reverse().forEach(subName => {
-            const clonedItem = cloneTemplate(subName);
-            root[subName] = clonedItem;
-            root.container.prepend(clonedItem.container);
-        });
-    }
+    // Вывод шаблонов ДО таблицы в обратном порядке для prepend
+    before.slice().reverse().forEach(subName => {
+        root[subName] = cloneTemplate(subName);
+        root.container.prepend(root[subName].container);
+    });
 
-    // добавляем шаблоны после основной таблицы
-    if (Array.isArray(after)) {
-        after.forEach(subName => {
-            const clonedItem = cloneTemplate(subName);
-            root[subName] = clonedItem;
-            root.container.append(clonedItem.container);
-        });
-    }
+    // Вывод шаблонов ПОСЛЕ таблицы в обычном порядке для append
+    after.forEach(subName => {
+        root[subName] = cloneTemplate(subName);
+        root.container.append(root[subName].container);
+    });
 
     // @todo: #1.3 —  обработать события и вызвать onAction()
-    // обработчик события 'change'
     root.container.addEventListener('change', () => {
         onAction();
     });
 
-    // обработчик события 'reset'
     root.container.addEventListener('reset', () => {
-        setTimeout(onAction, 0);
+        setTimeout(() => onAction(), 0);
     });
 
-    // обработчик события 'submit'
     root.container.addEventListener('submit', (e) => {
         e.preventDefault();
         onAction(e.submitter);
     });
 
-    const render = (data) => {
-        // @todo: #1.1 — преобразовать данные в массив строк на основе шаблона rowTemplate
+    // @todo: #1.1 — преобразовать данные в массив строк на основе шаблона rowTemplate
+    function render(data) {
         const nextRows = data.map(item => {
             const row = cloneTemplate(rowTemplate);
             Object.keys(item).forEach(key => {
-                if (row.elements[key]) {
-                    row.elements[key].textContent = item[key];
+                if (row.elements && key in row.elements) {
+                    const el = row.elements[key];
+                    // Можно проверить тип тега, но для задания достаточно textContent
+                    if (el.tagName === 'INPUT' || el.tagName === 'SELECT') {
+                        el.value = item[key];
+                    } else {
+                        el.textContent = item[key];
+                    }
                 }
             });
-            return row.container;
+            return row.container; // Возвращаем DOM-узел строки
         });
-        root.elements.rows.replaceChildren(...nextRows);
+
+        // Очистим текущие строки в таблице и добавим новые
+        // Предположим, что у root.elements есть container для строк, иначе используем root.container
+        if (root.elements && root.elements.rows) {
+            root.elements.rows.replaceChildren(...nextRows);
+        } else {
+            // Просто вставим строки внутрь корневого контейнера (в зависимости от структуры шаблона может потребоваться адаптация)
+            root.container.replaceChildren(...nextRows);
+        }
     }
 
     return { ...root, render };

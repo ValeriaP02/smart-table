@@ -21,10 +21,11 @@ const { data, ...indexes } = initData(sourceData);
  * Сбор и обработка полей из таблицы
  * @returns {Object}
  */
+
 function collectState() {
     const state = processFormData(new FormData(sampleTable.container));
-    const rowsPerPage = parseInt(state.rowsPerPage); // приведём количество страниц к числу
-    const page = parseInt(state.page ?? 1); // номер страницы по умолчанию 1 и тоже число
+    const rowsPerPage = parseInt(state.rowsPerPage);
+    const page = parseInt(state.page ?? 1);
 
     const totalFrom = state.totalFrom ? parseFloat(state.totalFrom) : null;
     const totalTo = state.totalTo ? parseFloat(state.totalTo) : null;
@@ -42,24 +43,25 @@ function collectState() {
  * Перерисовка состояния таблицы при любых изменениях
  * @param {HTMLButtonElement?} action
  */
+
 function render(action) {
-    let state = collectState(); // состояние полей из таблицы
-    let result = [...data]; // копируем для последующего изменения
+    let state = collectState();
+    let result = [...data];
 
     // @todo: использование
-    // 1. поиск
+    // поиск
     result = applySearching(result, state, action);
 
-    // 2. фильтрация
+    // фильтрация
     result = applyFiltering(result, state, action);
 
-    // 3. сортировка
+    // сортировка
     result = applySorting(result, state, action);
 
-    // 4. пагинация
+    // пагинация
     result = applyPagination(result, state, action);
 
-    // 5. вывод в таблицу
+    // вывод в таблицу
     sampleTable.render(result);
 }
 
@@ -88,17 +90,21 @@ const applySorting = initSorting([
     sampleTable.header.elements.sortByTotal
 ]);
 
-const applyFiltering = initFiltering(sampleTable.filter.elements, {
-    searchBySeller: indexes.sellers
-});
+const applyFiltering = initFiltering(
+    sampleTable.filter.elements,
+    { searchBySeller: indexes.sellers },
+    collectState(),    // state с полями формы
+    data,              // полный набор данных
+    null               // действие пока может быть null
+);
 
 const applySearching = initSearching(sampleTable.search.elements, {
-    searchField: sampleTable.search.elements.searchValue, // Имя поля для поиска
+    searchField: sampleTable.search.elements.searchValue,
     rules: [
-        { rule: 'skipEmptyTargetValues' }, // Правило для пропуска пустых значений
+        { rule: 'skipEmptyTargetValues' },
         {
             rule: 'searchMultipleFields',
-            searchField: ['date', 'customer', 'seller'], // Поля, по которым будет осуществляться поиск
+            searchField: ['date', 'customer', 'seller'],
             exclude: false
         }
     ]
