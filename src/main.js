@@ -93,10 +93,14 @@ const applyFiltering = initFiltering(sampleTable.filter.elements, {
 });
 
 const applySearching = initSearching(sampleTable.search.elements, {
-    searchField: sampleTable.search.elements.searchValue,
+    searchField: sampleTable.search.elements.searchValue, // Имя поля для поиска
     rules: [
-        { rule: 'skipEmptyTargetValues' },
-        { rule: 'searchMultipleFields', searchField: ['date', 'customer', 'seller'], exclude: false }
+        { rule: 'skipEmptyTargetValues' }, // Правило для пропуска пустых значений
+        {
+            rule: 'searchMultipleFields',
+            searchField: ['date', 'customer', 'seller'], // Поля, по которым будет осуществляться поиск
+            exclude: false
+        }
     ]
 });
 

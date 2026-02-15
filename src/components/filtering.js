@@ -3,7 +3,7 @@ import { createComparison, defaultRules } from "../lib/compare.js";
 // @todo: #4.3 — настроить компаратор
 const compare = createComparison(defaultRules);
 
-export function initFiltering(elements, indexes) {
+export function initFiltering(elements, indexes, state, data, action) {
     // @todo: #4.1 — заполнить выпадающие списки опциями
     Object.keys(indexes)
         .forEach((elementName) => {
@@ -23,35 +23,28 @@ export function initFiltering(elements, indexes) {
                         return option;
                     })
             );
-        });;
+        });
 
-    return (data, state, action) => {
-        if (action && action.type === 'clear') {
-            const button = document.querySelector(`button[data-field="${action.payload.field}"]`);
-            if (button) {
-                const parent = button.parentElement;
-                const input = parent.querySelector('input');
-                if (input) {
-                    input.value = '';
-                }
+    // @todo: #4.2 — очистка полей фильтров
+    if (action && action.type === 'clear') {
+        const clearButton = document.querySelector(`button[data-field="${action.payload.field}"]`);
+        if (clearButton) {
+            const parent = clearButton.parentElement;
+
+            const inputToClear = parent.querySelector('input[data-field]');
+            if (inputToClear) {
+                inputToClear.value = '';
+                state[action.payload.field] = '';
+            }
+
+            const selectToClear = parent.querySelector('select[data-field]');
+            if (selectToClear) {
+                selectToClear.value = '';
                 state[action.payload.field] = '';
             }
         }
-
-        return data.filter(row => {
-            if (!compare(row, state)) return false;
-
-            if (state.totalFrom !== null && row.total < state.totalFrom) {
-                return false;
-            }
-            if (state.totalTo !== null && row.total > state.totalTo) {
-                return false;
-            }
-
-            return true;
-        });
-
-        // @todo: #4.5 — отфильтровать данные используя компаратор
-        return data.filter(row => compare(row, state));
     }
+
+    // @todo: #4.5 — отфильтровать данные используя компаратор
+    return data.filter(row => compare(row, state));
 }
