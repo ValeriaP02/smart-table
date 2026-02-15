@@ -87,14 +87,10 @@ const applyFiltering = initFiltering(sampleTable.filter.elements, {
 });
 
 const applySearching = initSearching(sampleTable.search.elements, {
-    searchField: sampleTable.search.elements.searchValue,
+    searchField: 'searchValue',
     rules: [
         { rule: 'skipEmptyTargetValues' },
-        {
-            rule: 'searchMultipleFields',
-            searchField: ['date', 'customer', 'seller'],
-            exclude: false
-        }
+        { rule: 'searchMultipleFields', searchField: 'searchValue', searchFields: ['date', 'customer', 'seller'], caseSensitive: false }
     ]
 });
 
