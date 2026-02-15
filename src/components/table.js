@@ -46,7 +46,7 @@ export function initTable(settings, onAction) {
             Object.keys(item).forEach(key => {
                 if (row.elements && key in row.elements) {
                     const el = row.elements[key];
-                    if (el.tagName === 'INPUT' || el.tagName === 'SELECT') {
+                    if (el.tagName === 'input' || el.tagName === 'select') {
                         el.value = item[key];
                     } else {
                         el.textContent = item[key];
