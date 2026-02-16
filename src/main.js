@@ -27,11 +27,21 @@ function collectState() {
 
     const rowsPerPage = parseInt(state.rowsPerPage);
     const page = parseInt(state.page ?? 1);
+    const total = [null, null];
+
+    const totalFrom = Number(state.totalFrom);
+    if (state.totalFrom !== '' && !isNaN(totalFrom))
+        total[0] = totalFrom;
+
+    const totalTo = Number(state.totalTo);
+    if (state.totalTo !== '' && !isNaN(totalTo))
+        total[1] = totalTo;
 
     return {
         ...state,
         rowsPerPage,
-        page
+        page,
+        total
     };
 }
 
