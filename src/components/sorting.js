@@ -11,14 +11,14 @@ export function initSorting(columns) {
             field = action.dataset.field;
             order = action.dataset.value;
 
-            // @todo: #3.2 — сбросить сортировки остальных колонок
+            // @todo: #3.2 — сбросить сортировку остальных колонок
             columns.forEach(column => {
                 if (column.dataset.field !== action.dataset.field) {
                     column.dataset.value = 'none';
                 }
             });
         } else {
-            // @todo: #3.3 — получить выбранный режим сортировки
+            // @todo: #3.3 — получить выбранный режим сортировки из текущих состояний кнопок
             columns.forEach(column => {
                 if (column.dataset.value !== 'none') {
                     field = column.dataset.field;
@@ -28,5 +28,5 @@ export function initSorting(columns) {
         }
 
         return sortCollection(data, field, order);
-    }
+    };
 }

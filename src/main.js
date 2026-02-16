@@ -15,7 +15,6 @@ import { initSearching } from './components/searching.js';
 
 // @todo: подключение
 
-
 // Исходные данные используемые в render()
 const { data, ...indexes } = initData(sourceData);
 
@@ -25,18 +24,14 @@ const { data, ...indexes } = initData(sourceData);
  */
 function collectState() {
     const state = processFormData(new FormData(sampleTable.container));
+
     const rowsPerPage = parseInt(state.rowsPerPage);
     const page = parseInt(state.page ?? 1);
-
-    const totalFrom = state.totalFrom ? parseFloat(state.totalFrom) : null;
-    const totalTo = state.totalTo ? parseFloat(state.totalTo) : null;
 
     return {
         ...state,
         rowsPerPage,
-        page,
-        totalFrom,
-        totalTo
+        page
     };
 }
 
@@ -49,10 +44,10 @@ function render(action) {
     let result = [...data];
 
     // @todo: использование
-    result = applySearching(result, state, action); // <<< Поиск
-    result = applyFiltering(result, state, action); // <<< Фильтрация
-    result = applySorting(result, state, action);
-    result = applyPagination(result, state, action);
+    result = applySearching(result, state, action);   // Поиск
+    result = applyFiltering(result, state, action);   // Фильтрация
+    result = applySorting(result, state, action);     // Сортировка 
+    result = applyPagination(result, state, action);  // Пагинация
 
     sampleTable.render(result);
 }
@@ -63,6 +58,7 @@ const sampleTable = initTable({
     before: ['search', 'header', 'filter'],
     after: ['pagination']
 }, render);
+
 
 // @todo: инициализация
 const applyPagination = initPagination(
@@ -86,11 +82,7 @@ const applyFiltering = initFiltering(sampleTable.filter.elements, {
     searchBySeller: indexes.sellers
 });
 
-const applySearching = initSearching(sampleTable.search.elements, {
-    searchField: 'searchValue',
-    searchFields: ['date', 'customer', 'seller'],
-    caseSensitive: false
-});
+const applySearching = initSearching('search');
 
 const appRoot = document.querySelector('#app');
 appRoot.appendChild(sampleTable.container);

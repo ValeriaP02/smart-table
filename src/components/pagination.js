@@ -28,12 +28,11 @@ export const initPagination = ({ pages, fromRow, toRow, totalRows }, createPage)
 
         // @todo: #2.5 — обновить статус пагинации
         fromRow.textContent = (page - 1) * rowsPerPage + 1;
-        toRow.textContent = Math.min((page * rowsPerPage), data.length);
+        toRow.textContent = Math.min(page * rowsPerPage, data.length);
         totalRows.textContent = data.length;
 
         // @todo: #2.2 — посчитать сколько строк нужно пропустить и получить срез данных
         const skip = (page - 1) * rowsPerPage;
         return data.slice(skip, skip + rowsPerPage);
-        return data.slice(0, 10);
-    }
-}
+    };
+};
