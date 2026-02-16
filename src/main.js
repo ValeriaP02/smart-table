@@ -8,11 +8,13 @@ import { processFormData } from "./lib/utils.js";
 
 import { initTable } from "./components/table.js";
 
-import { initPagination } from './components/pagination.js';
 import { initSorting } from './components/sorting.js';
+import { initPagination } from './components/pagination.js';
 import { initFiltering } from './components/filtering.js';
 import { initSearching } from './components/searching.js';
+
 // @todo: подключение
+
 
 // Исходные данные используемые в render()
 const { data, ...indexes } = initData(sourceData);
@@ -21,7 +23,6 @@ const { data, ...indexes } = initData(sourceData);
  * Сбор и обработка полей из таблицы
  * @returns {Object}
  */
-
 function collectState() {
     const state = processFormData(new FormData(sampleTable.container));
     const rowsPerPage = parseInt(state.rowsPerPage);
@@ -43,14 +44,13 @@ function collectState() {
  * Перерисовка состояния таблицы при любых изменениях
  * @param {HTMLButtonElement?} action
  */
-
 function render(action) {
-    const state = collectState();
+    let state = collectState();
     let result = [...data];
 
     // @todo: использование
-    result = applySearching(result, state, action);
-    result = applyFiltering(result, state, action);
+    result = applySearching(result, state, action); // <<< Поиск
+    result = applyFiltering(result, state, action); // <<< Фильтрация
     result = applySorting(result, state, action);
     result = applyPagination(result, state, action);
 
