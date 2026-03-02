@@ -49,6 +49,9 @@ export function initData(sourceData) {
             items: mapRecords(records.items)
         };
 
+        console.log('getRecords вызван с query:', query);
+        console.log('Возвращается:', lastResult);
+
         return lastResult;
     };
 
