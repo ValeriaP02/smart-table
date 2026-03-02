@@ -61,9 +61,6 @@ async function render(action) {
 
     updatePagination(total, query); // перерисовываем пагинатор
     sampleTable.render(items);
-    console.log('Рендерим таблицу с items:', items);
-
-    console.log('Запрос к API:', query);
 }
 
 const sampleTable = initTable(
