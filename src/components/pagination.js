@@ -19,7 +19,7 @@ export const initPagination = ({ pages, fromRow, toRow, totalRows }, createPage)
             case 'last': page = pageCount; break;                        // переход на последнюю страницу
         }
 
-        return Object.assign({}, query, { // добавим параметры к query, но не изменяем исходный объект
+        return Object.assign({}, query, { 
             limit,
             page
         });
