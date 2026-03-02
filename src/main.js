@@ -23,23 +23,13 @@ const api = initData(sourceData);
 function collectState() {
     const state = processFormData(new FormData(sampleTable.container));
 
-    const rowsPerPage = parseInt(state.rowsPerPage);
-    const page = parseInt(state.page ?? 1);
-    const total = [null, null];
-
-    const totalFrom = Number(state.totalFrom);
-    if (state.totalFrom !== '' && !isNaN(totalFrom))
-        total[0] = totalFrom;
-
-    const totalTo = Number(state.totalTo);
-    if (state.totalTo !== '' && !isNaN(totalTo))
-        total[1] = totalTo;
+    const rowsPerPage = parseInt(state.rowsPerPage); // приведём количество страниц к числу
+    const page = parseInt(state.page ?? 1); // номер страницы по умолчанию 1 и тоже число
 
     return {
         ...state,
         rowsPerPage,
-        page,
-        total
+        page
     };
 }
 
